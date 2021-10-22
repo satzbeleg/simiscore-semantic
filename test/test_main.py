@@ -1,5 +1,7 @@
 from starlette.testclient import TestClient
+
 from app.main import app, srvurl
+from app.pydantic_models import SentenceInstance
 
 
 def test_read_main():
@@ -11,43 +13,28 @@ def test_read_main():
 
 def test_item_id_none():
     client = TestClient(app)
-    response = client.get(f"{srvurl}/items/")
+    response = client.get(f"{srvurl}/similarities/")
     assert response.status_code == 200
-    assert response.json() == {"item_id": None}
+    assert response.json() == {"instance_id": None}
 
 
 def test_valid_item_id():
     client = TestClient(app)
-    response = client.get(f"{srvurl}/items/42")
+    response = client.get(f"{srvurl}/similarities/abc")
     assert response.status_code == 200
-    assert response.json() == {"item_id": 42, "q": None}
+    assert response.json() == {"instance_id": "abc", "q": None}
 
 
 def test_valid_query():
     client = TestClient(app)
-    response = client.get(f"{srvurl}/items/42?q=23")
+    response = client.get(f"{srvurl}/similarities/42?q=23")
     assert response.status_code == 200
-    assert response.json() == {"item_id": 42, "q": "23"}
-
-
-def test_validation_error_item():
-    client = TestClient(app)
-    response = client.get(f"{srvurl}/items/abc")
-    assert response.status_code == 422
-    assert response.json() == {
-        "detail": [
-            {
-                "loc": ["path", "item_id"],
-                "msg": "value is not a valid integer",
-                "type": "type_error.integer",
-            }
-        ]
-    }
+    assert response.json() == {"instance_id": "42", "q": "23"}
 
 
 def test_response_fail_invalid_query():
     client = TestClient(app)
-    response = client.get(f"{srvurl}/items/42/[ab]")
+    response = client.get(f"{srvurl}/similarities/42/[ab]")
     assert response.status_code == 404
 
 

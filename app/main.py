@@ -4,11 +4,12 @@ from typing import Dict, List, Union
 from fastapi import FastAPI
 
 from app.pydantic_models import SentenceInstance
+from app.similarity_scorer import SimilarityScorer
 
 # define the server url (excl. hostname:port)
 # srvurl = "/testapi/v1"
 srvurl = ""
-
+similarity_scorer = SimilarityScorer()
 # basic information
 app = FastAPI(
     title="Simiscore-Semantic ML API",
@@ -38,10 +39,10 @@ async def read_items(item_id: str, q: str = None):
 
 @app.post(f"{srvurl}/similarities/")
 async def compute_similarites(
-    query_sents: Union[List[str], Dict[str, str]],
-) -> list:  # return matrix
+    query_sents: Union[List[str], Dict[uuid.UUID, str]],
+) -> Dict[str, list]:
     if isinstance(query_sents, list):
         query_sents = {uuid.uuid4(): sentence for sentence in query_sents}
     # compute similarities using SBERT
-    matrix = {}
-    return matrix
+    response = similarity_scorer.compute_similarity_matrix(query_sents)
+    return response
