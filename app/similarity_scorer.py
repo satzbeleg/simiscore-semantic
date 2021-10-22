@@ -1,11 +1,14 @@
-from typing import Dict
 import uuid
+from typing import Dict
 
 from sentence_transformers import SentenceTransformer, util
 
 
 class SimilarityScorer:
-    def __init__(self, model: str = "distiluse-base-multilingual-cased-v1") -> None:
+    def __init__(
+        self,
+        model: str = "distiluse-base-multilingual-cased-v1",
+    ) -> None:
         self.model = SentenceTransformer(model)
 
     def compute_similarity_matrix(
