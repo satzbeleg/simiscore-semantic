@@ -13,7 +13,7 @@ class SimilarityScorer:
         query_embeddings = self.model.encode(list(query_sents.values()))
         similarity_matrix = []
 
-        for i, id in enumerate(ids):
+        for i, idx in enumerate(ids):
             similarity_matrix.append(
                 util.cos_sim(query_embeddings[i], query_embeddings).tolist()
             )
