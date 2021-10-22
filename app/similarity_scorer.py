@@ -5,10 +5,7 @@ from sentence_transformers import SentenceTransformer, util
 
 
 class SimilarityScorer:
-    def __init__(
-        self,
-        model: str = "distiluse-base-multilingual-cased-v1",
-    ) -> None:
+    def __init__(self, model: str = "distiluse-base-multilingual-cased-v1",) -> None:
         self.model = SentenceTransformer(model)
 
     def compute_similarity_matrix(
@@ -16,10 +13,5 @@ class SimilarityScorer:
     ) -> Dict[str, list]:
         ids = list(query_sents.keys())
         query_embeddings = self.model.encode(list(query_sents.values()))
-        similarity_matrix = []
-
-        for i, idx in enumerate(ids):
-            similarity_matrix.append(
-                util.cos_sim(query_embeddings[i], query_embeddings).tolist()
-            )
+        similarity_matrix = util.cos_sim(query_embeddings, query_embeddings).tolist()
         return {"ids": ids, "matrix": similarity_matrix}

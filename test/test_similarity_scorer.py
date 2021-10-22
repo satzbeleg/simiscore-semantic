@@ -25,9 +25,7 @@ Telegraf verschickt wurde."
 
     def test_score_for_same_sentence(self):
         test_sentences = {"a": self.sentences[1], "b": self.sentences[1]}
-        result = self.scorer.compute_similarity_matrix(test_sentences)["matrix"][0][0][
-            1
-        ]
+        result = self.scorer.compute_similarity_matrix(test_sentences)["matrix"][0][1]
         self.assertAlmostEqual(result, 1.0, places=5)
 
     def test_score_for_different_sentences(self):
@@ -35,9 +33,7 @@ Telegraf verschickt wurde."
             "a": self.sentences[0],
             "b": self.sentences[1],
         }
-        result = self.scorer.compute_similarity_matrix(test_sentences)["matrix"][0][0][
-            1
-        ]
+        result = self.scorer.compute_similarity_matrix(test_sentences)["matrix"][0][1]
         self.assertLessEqual(result, 0.5)
 
     def test_id_extraction(self):
@@ -51,22 +47,18 @@ Telegraf verschickt wurde."
     def test_empty_query(self):
         query = {}
         result = self.scorer.compute_similarity_matrix(query)
-        expected = {"ids": [], "matrix": []}
+        expected = {"ids": [], "matrix": [[0.0]]}
         self.assertEqual(result, expected)
 
     def test_query_only_one_sentence(self):
         query = {"a": self.sentences[2]}
-        result = self.scorer.compute_similarity_matrix(query)["matrix"][0][0][0]
+        result = self.scorer.compute_similarity_matrix(query)["matrix"][0][0]
         self.assertAlmostEqual(result, 1, places=5)
 
     def test_multiple_sentences(self):
         test_sentences = self.sentences * 3
         query = {i: sent for i in range(len(test_sentences)) for sent in test_sentences}
-        result = self.scorer.compute_similarity_matrix(query)["matrix"][0][0][
+        result = self.scorer.compute_similarity_matrix(query)["matrix"][0][
             len(self.sentences)
         ]
         self.assertAlmostEqual(result, 1, places=5)
-
-
-if __name__ == "__main__":
-    unittest.main()
