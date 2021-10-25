@@ -22,23 +22,12 @@ app = FastAPI(
 )
 
 
-# specify the endpoints
 @app.get(f"{srvurl}/")
-def read_root():
-    return {"msg": "Hello World"}
+def get_info():
+    return {"version": app.version, "model": similarity_scorer.model_name}
 
 
-@app.get(f"{srvurl}/similarities/")
-async def read_items_null():
-    return {"instance_id": None}
-
-
-@app.get(srvurl + "/similarities/{item_id}")
-async def read_items(item_id: str, q: str = None):
-    return {"instance_id": item_id, "q": q}
-
-
-@app.post(f"{srvurl}/similarities/")
+@app.post(f"{srvurl}/similarities/", response_model=Dict[str, list])
 async def compute_similarites(
     query_sents: Union[List[str], Dict[uuid.UUID, str]],
 ) -> Dict[str, list]:
