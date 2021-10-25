@@ -3,38 +3,18 @@ from starlette.testclient import TestClient
 from app.main import app, srvurl
 
 
-def test_read_main():
+def almost_equal(val1, val2, accuracy=10 ** -5):
+    return abs(val1 - val2) < accuracy
+
+
+def test_read_info():
     client = TestClient(app)
     response = client.get(f"{srvurl}/")
     assert response.status_code == 200
-    assert response.json() == {"msg": "Hello World"}
-
-
-def test_item_id_none():
-    client = TestClient(app)
-    response = client.get(f"{srvurl}/similarities/")
-    assert response.status_code == 200
-    assert response.json() == {"instance_id": None}
-
-
-def test_valid_item_id():
-    client = TestClient(app)
-    response = client.get(f"{srvurl}/similarities/abc")
-    assert response.status_code == 200
-    assert response.json() == {"instance_id": "abc", "q": None}
-
-
-def test_valid_query():
-    client = TestClient(app)
-    response = client.get(f"{srvurl}/similarities/42?q=23")
-    assert response.status_code == 200
-    assert response.json() == {"instance_id": "42", "q": "23"}
-
-
-def test_response_fail_invalid_query():
-    client = TestClient(app)
-    response = client.get(f"{srvurl}/similarities/42/[ab]")
-    assert response.status_code == 404
+    assert response.json() == {
+        "version": "0.1.0",
+        "model": "paraphrase-multilingual-MiniLM-L12-v2"
+    }
 
 
 def test_docs_reachable():
@@ -43,5 +23,34 @@ def test_docs_reachable():
     assert response.status_code == 200
 
 
-# FURTHER INFORMATION
-# https://fastapi.tiangolo.com/tutorial/testing/
+def test_post_request():
+    test_sentences = [
+        "Einen Brief quer durch die USA schicken – in nur 10 Tagen!",
+        "Eine revolutionäre Entwicklung, dauerte der Postversand um 1850 ein"
+        "bis zwei Monate.",
+        "Möglich machte es der sogenannte Pony-Express.",
+        "Am 3. April 1860 begann eine Stafette furchtloser junger Männer, "
+        "entlang der mehr als 3000 km langen Strecke zwischen Kalifornien und "
+        "Missouri zuzustellen – hoch zu Ross, den widrigen Wetterverhältnissen"
+        " und Überfällen trotzend.",
+        "Allem Pioniergeist zum Trotz schienen die Gründer jedoch aufs Pferd "
+        "gesetzt zu haben.",
+        "Denn bereits 18 Monate später wurde der Pony-Express"
+        " eingestellt.",
+        "Zwei Tage, nachdem das erste transkontinentale Telegramm per "
+        "verschickt wurde.",
+    ]
+    client = TestClient(app)
+    response = client.post(f"{srvurl}/similarities/", json=test_sentences)
+    result = [
+        response.json()["matrix"][i][i] for i in range(len(test_sentences))
+    ]
+    assert response.status_code == 200
+    assert all(almost_equal(val1, 1) for val1 in result)
+
+
+def test_post_empty_list():
+    client = TestClient(app)
+    response = client.post(f"{srvurl}/similarities/", json=[])
+    assert response.status_code == 200
+    assert response.json() == {"ids": [], "matrix": [[0.0]]}
