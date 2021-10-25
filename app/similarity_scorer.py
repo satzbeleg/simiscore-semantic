@@ -7,9 +7,10 @@ from sentence_transformers import SentenceTransformer, util
 class SimilarityScorer:
     def __init__(
         self,
-        model: str = "distiluse-base-multilingual-cased-v1",
+        model: str = "paraphrase-multilingual-MiniLM-L12-v2",
     ) -> None:
         self.model = SentenceTransformer(model)
+        self.model_name = model
 
     def compute_similarity_matrix(
         self, query_sents: Dict[uuid.UUID, str]
