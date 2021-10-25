@@ -1,7 +1,6 @@
 from starlette.testclient import TestClient
 
 from app.main import app, srvurl
-from app.pydantic_models import SentenceInstance
 
 
 def test_read_main():

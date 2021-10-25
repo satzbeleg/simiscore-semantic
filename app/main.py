@@ -3,7 +3,6 @@ from typing import Dict, List, Union
 
 from fastapi import FastAPI
 
-from app.pydantic_models import SentenceInstance
 from app.similarity_scorer import SimilarityScorer
 
 # define the server url (excl. hostname:port)
@@ -13,7 +12,9 @@ similarity_scorer = SimilarityScorer()
 # basic information
 app = FastAPI(
     title="Simiscore-Semantic ML API",
-    descriptions=("This is a FastAPI boilerplate. " "Please adjust it to your needs. "),
+    descriptions=(
+        "This is a FastAPI boilerplate. " "Please adjust it to your needs. "
+    ),
     version="0.1.0",
     openapi_url=f"{srvurl}/openapi.json",
     docs_url=f"{srvurl}/docs",
