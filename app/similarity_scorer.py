@@ -1,7 +1,7 @@
 import uuid
 from typing import Dict
 
-from sentence_transformers import SentenceTransformer, util
+import sentence_transformers as sbert
 
 
 class SimilarityScorer:
@@ -19,13 +19,13 @@ class SimilarityScorer:
                 sentence_transformers.
 
         """
-        self.model = SentenceTransformer(model)
+        self.model = sbert.SentenceTransformer(model)
         self.model_name = model
 
     def compute_similarity_matrix(
         self, query_sents: Dict[uuid.UUID, str]
     ) -> Dict[str, list]:
-    
+
         """
         Compute similarity scores for sequence of text strings.
 
@@ -37,7 +37,7 @@ class SimilarityScorer:
         """
         ids = list(query_sents.keys())
         query_embeddings = self.model.encode(list(query_sents.values()))
-        similarity_matrix = util.cos_sim(
+        similarity_matrix = sbert.util.cos_sim(
             query_embeddings, query_embeddings
         ).tolist()
         return {"ids": ids, "matrix": similarity_matrix}
