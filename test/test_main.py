@@ -13,7 +13,7 @@ def test_read_info():
     assert response.status_code == 200
     assert response.json() == {
         "version": "0.1.0",
-        "model": "paraphrase-multilingual-MiniLM-L12-v2"
+        "model": "paraphrase-multilingual-MiniLM-L12-v2",
     }
 
 
@@ -35,8 +35,7 @@ def test_post_request():
         " und Überfällen trotzend.",
         "Allem Pioniergeist zum Trotz schienen die Gründer jedoch aufs Pferd "
         "gesetzt zu haben.",
-        "Denn bereits 18 Monate später wurde der Pony-Express"
-        " eingestellt.",
+        "Denn bereits 18 Monate später wurde der Pony-Express eingestellt.",
         "Zwei Tage, nachdem das erste transkontinentale Telegramm per "
         "verschickt wurde.",
     ]
