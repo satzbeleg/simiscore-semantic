@@ -24,7 +24,7 @@ app = FastAPI(
 
 
 @app.get(f"{srvurl}/")
-def get_info():
+def get_info() -> dict:
     """Returns basic information about the application"""
     return {"version": app.version, "model": similarity_scorer.model_name}
 
