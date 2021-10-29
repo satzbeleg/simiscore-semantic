@@ -5,27 +5,23 @@ import sentence_transformers as sbert
 
 
 class SimilarityScorer:
+    """Computes similarity scores between text strings"""
+
     def __init__(
         self,
         model: str = "paraphrase-multilingual-MiniLM-L12-v2",
     ) -> None:
-        """Computes similarity scores between text strings.
-        Attributes:
-            model: sbert.SentenceTransformer
-                Instance of pretrained language model.
-            model_name: str, optional
-                Name of the model to use. Default is model
-                'paraphrase-multilingual-MiniLM-L12-v2' from
-                sentence_transformers.
 
-        """
-        self.model = sbert.SentenceTransformer(model)
-        self.model_name = model
+        self._model = sbert.SentenceTransformer(model)
+        self._model_name = model
+
+    @property
+    def model_name(self):
+        return self._model_name
 
     def compute_similarity_matrix(
         self, query_sents: Dict[uuid.UUID, str]
     ) -> Dict[str, list]:
-
         """
         Compute similarity scores for sequence of text strings.
 
@@ -36,7 +32,7 @@ class SimilarityScorer:
             A dictionary storing sentence ids and the similarity matrix.
         """
         ids = list(query_sents.keys())
-        query_embeddings = self.model.encode(list(query_sents.values()))
+        query_embeddings = self._model.encode(list(query_sents.values()))
         similarity_matrix = sbert.util.cos_sim(
             query_embeddings, query_embeddings
         ).tolist()
