@@ -16,9 +16,9 @@ def sentences():
     doch ein bis zwei Monate.",
         "Möglich machte es der sogenannte Pony-Express.",
         "Am 3. April 1860 begann eine Stafette furchtloser junger Männer, \
-    Briefe entlang der mehr als 3000 km langen Strecke zwischen Kalifornien und \
-    Missouri zuzustellen – hoch zu Ross, den widrigen Wetterverhältnissen und \
-    feindlichen Überfällen trotzend.",
+    Briefe entlang der mehr als 3000 km langen Strecke zwischen Kalifornien \
+    und Missouri zuzustellen – hoch zu Ross, den widrigen Wetterverhältnissen \
+    und feindlichen Überfällen trotzend.",
         "Allem Pioniergeist zum Trotz schienen die Gründer jedoch aufs \
     falsche Pferd gesetzt zu haben.",
         "Denn bereits 18 Monate später wurde der Pony-Express" " eingestellt.",
