@@ -13,7 +13,8 @@ similarity_scorer = SimilarityScorer()
 app = FastAPI(
     title="Simiscore-Semantic ML API",
     descriptions=(
-        "This is a FastAPI boilerplate. " "Please adjust it to your needs. "
+        "Simiscore-Semantic ML API computes similarities between sentences "
+        "using a pretrained language model."
     ),
     version="0.1.0",
     openapi_url=f"{srvurl}/openapi.json",
@@ -24,6 +25,7 @@ app = FastAPI(
 
 @app.get(f"{srvurl}/")
 def get_info():
+    """Returns basic information about the application"""
     return {"version": app.version, "model": similarity_scorer.model_name}
 
 
@@ -31,6 +33,17 @@ def get_info():
 async def compute_similarites(
     query_sents: Union[List[str], Dict[uuid.UUID, str]],
 ) -> Dict[str, list]:
+    """
+    Computes similarity score for a sequence of text strings.
+
+    Parameters:
+        query_sents: Union[dict, list]
+            Sequence of text strings to be processed.
+    Returns: Dict[str, list]
+            A dictionary containing the sentence ids ('ids') and a matrix
+            with the similarity scores ('matrix'). Indices in the matrix
+            correspond to the indices in the ids-list.
+    """
     if isinstance(query_sents, list):
         query_sents = {uuid.uuid4(): sentence for sentence in query_sents}
     # compute similarities using SBERT
