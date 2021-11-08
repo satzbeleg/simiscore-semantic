@@ -1,6 +1,6 @@
+import os
 import uuid
 from typing import Dict
-import os
 
 import sentence_transformers as sbert
 
@@ -19,7 +19,9 @@ class SimilarityScorer:
             self._model = sbert.SentenceTransformer(modelpath)
         # download model
         else:
-            self._model = sbert.SentenceTransformer(model, cache_folder=cache_folder)
+            self._model = sbert.SentenceTransformer(
+                model, cache_folder=cache_folder
+            )
         self._model_name = model
 
     @property
