@@ -32,14 +32,15 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
 # ------------- Part 2 -------------
-FROM base 
+FROM base
 
 ENV VIRTUAL_ENV=/opt/venv
 COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # download sentence-transformers model
-RUN python3 -c 'import sentence_transformers as sbert; sbert.SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2");'
+RUN mkdir /tmp/sbert-models
+RUN python3 -c 'import sentence_transformers as sbert; sbert.SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2", cache_folder="/tmp/sbert-models");'
 
 # Port Setting
 EXPOSE 80
