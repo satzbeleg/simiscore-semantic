@@ -2,7 +2,7 @@ FROM debian:buster-slim AS base
 
 # install python
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends python3
+RUN apt-get install -y --no-install-recommends python3 python3-distutils
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
@@ -37,6 +37,9 @@ FROM base
 ENV VIRTUAL_ENV=/opt/venv
 COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# download sentence-transformers model
+RUN python3 -c 'import sentence_transformers as sbert; sbert.SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2");'
 
 # Port Setting
 EXPOSE 80
