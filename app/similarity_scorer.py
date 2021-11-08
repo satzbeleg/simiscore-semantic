@@ -16,7 +16,7 @@ class SimilarityScorer:
         self._model_name = model
 
     @property
-    def model_name(self):
+    def model_name(self) -> str:
         return self._model_name
 
     def compute_similarity_matrix(
