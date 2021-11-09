@@ -39,8 +39,9 @@ COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # download sentence-transformers model
-RUN mkdir /tmp/sbert-models
-RUN python3 -c 'import sentence_transformers as sbert; sbert.SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2", cache_folder="/tmp/sbert-models");'
+RUN mkdir -p /sbert-models
+ENV SENTENCE_TRANSFORMERS_HOME=/sbert-models
+RUN python3 -c 'import sentence_transformers as sbert; sbert.SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2");'
 
 # Port Setting
 EXPOSE 80

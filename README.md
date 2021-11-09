@@ -1,9 +1,14 @@
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/myorg/template-fastapi.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/myorg/template-fastapi/alerts/)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/myorg/template-fastapi.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/myorg/template-fastapi/context:python)
-[![template-fastapi](https://snyk.io/advisor/python/template-fastapi/badge.svg)](https://snyk.io/advisor/python/template-fastapi)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/satzbeleg/simiscore-semantic.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/satzbeleg/simiscore-semantic/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/satzbeleg/simiscore-semantic.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/satzbeleg/simiscore-semantic/context:python)
+[![simiscore-semantic](https://snyk.io/advisor/python/simiscore-semantic/badge.svg)](https://snyk.io/advisor/python/simiscore-semantic)
 
 
-# TEMPLATE FASTAPI
+# simiscore-semantic
+An ML API to compute semantic similarity scores between sentence examples. 
+The API is programmed with the [`fastapi` Python package](https://fastapi.tiangolo.com/), 
+and the semantic similarities are comuted based on [SBert (`sentence-transformers` package)](https://github.com/UKPLab/sentence-transformers). 
+The deployment is configured for Docker Compose.
+
 
 
 ## Docker Deployment
@@ -12,9 +17,10 @@ Call Docker Compose
 ```sh
 export NUM_WORKERS=2
 export API_PORT=12345
-docker-compose up
+docker-compose up -f docker-compose.yml up --build
+
 # or as oneliner:
-# NUM_WORKERS=2 API_PORT=12345 docker-compose up
+NUM_WORKERS=2 API_PORT=12345 docker-compose -f docker-compose.yml up --build
 ```
 
 (Start docker daemon before, e.g. `open /Applications/Docker.app` on MacOS).
@@ -44,14 +50,24 @@ pip install -r requirements-dev.txt --no-cache-dir
 
 (If your git repo is stored in a folder with whitespaces, then don't use the subfolder `.venv`. Use an absolute path without whitespaces.)
 
+### Specify where to store the SBert model
+SBert allows to set the `cache_folder` via the environment variable `SENTENCE_TRANSFORMERS_HOME` (See [here](https://github.com/UKPLab/sentence-transformers/blob/bd19871d99068f4824ff6ef213d91596885889f7/sentence_transformers/SentenceTransformer.py#L48)).
+
+```sh
+mkdir ./sbert-models
+export SENTENCE_TRANSFORMERS_HOME="$(pwd)/sbert-models"
+```
+
 
 ### Start Server
 
 ```sh
 source .venv/bin/activate
-#uvicorn app.main:app --reload
-gunicorn app.main:app --reload --bind=0.0.0.0:80 \
-    --worker-class=uvicorn.workers.UvicornH11Worker --workers=2
+
+gunicorn app.main:app --reload \
+    --bind=localhost:12345 \
+    --worker-class=uvicorn.workers.UvicornH11Worker \
+    --workers=2
 ```
 
 Notes: 
@@ -60,11 +76,19 @@ Notes:
 - The `uvicorn.workers.UvicornWorker` worker can use HTTPS certificates by adding the arguments `--keyfile=./key.pem --certfile=./cert.pem` (see [Setup HTTPS for uvicorn](https://www.uvicorn.org/deployment/#running-with-https))
 
 
-### Run some requests
+### Usage Examples
 
 ```sh
-curl http://localhost:12345
-curl "http://localhost:12345/items/5?q=somequery"
+curl -X 'POST' \
+  'http://localhost:12345/similarities/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '[
+    "Der Film ist super.",
+    "Der Spielfilm ist gut.",
+    "Der Film ist Müll.",
+    "Der Spielfilm ist schlecht."
+  ]'
 ```
 
 ### Other commands and help
@@ -90,4 +114,4 @@ Please [open an issue](https://github.com/satzbeleg/simiscore-semantic/issues) f
 
 
 ### Contributing
-Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits, and [open a pull request](https://github.com/myorg/template-fastapi/compare/).
+Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits, and [open a pull request](https://github.com/satzbeleg/simiscore-semantic/compare/).
