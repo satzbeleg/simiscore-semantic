@@ -4,6 +4,7 @@ from typing import Dict, List, Union
 from fastapi import FastAPI
 
 from app.similarity_scorer import SimilarityScorer
+from app.validate_input import get_long_sentence_ids
 
 # define the server url (excl. hostname:port)
 # srvurl = "/testapi/v1"
@@ -46,6 +47,9 @@ async def compute_similarites(
     """
     if isinstance(query_sents, list):
         query_sents = {uuid.uuid4(): sentence for sentence in query_sents}
+    truncated_sent_ids = get_long_sentence_ids(query_sents)
     # compute similarities using SBERT
     response = similarity_scorer.compute_similarity_matrix(query_sents)
+    if truncated_sent_ids:
+        response["truncated"] = truncated_sent_ids
     return response

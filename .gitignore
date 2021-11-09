@@ -106,3 +106,4 @@ venv.bak/
 # virtual env
 .venv
 .tmp 
+sbert-models

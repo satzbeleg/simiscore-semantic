@@ -1,3 +1,4 @@
+import os
 import uuid
 from typing import Dict
 
@@ -11,12 +12,11 @@ class SimilarityScorer:
         self,
         model: str = "paraphrase-multilingual-MiniLM-L12-v2",
     ) -> None:
-
         self._model = sbert.SentenceTransformer(model)
         self._model_name = model
 
     @property
-    def model_name(self):
+    def model_name(self) -> str:
         return self._model_name
 
     def compute_similarity_matrix(
