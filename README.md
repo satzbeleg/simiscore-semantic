@@ -78,6 +78,8 @@ Notes:
 
 ### Usage Examples
 
+a) Send a list of strings.
+
 ```sh
 curl -X 'POST' \
   'http://localhost:12345/similarities/' \
@@ -89,6 +91,21 @@ curl -X 'POST' \
     "Der Film ist Müll.",
     "Der Spielfilm ist schlecht."
   ]'
+```
+
+b) Send an JSON object with UUID4 as keys and text as values.
+
+```sh
+curl -X 'POST' \
+  'http://localhost:12345/similarities/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "80ba0456-1d26-4d22-8e80-113b919502ee": "Der Film ist super.",
+    "a47fe293-26e7-40f0-b0b5-202e0955458f": "Der Spielfilm ist gut.",
+    "86e356a3-5b42-4e03-91fc-cf69098b6dd2": "Der Film ist Müll.",
+    "779d0245-8f54-49ec-9f0f-8e29dc987b41": "Der Spielfilm ist schlecht."
+   }'
 ```
 
 ### Other commands and help
