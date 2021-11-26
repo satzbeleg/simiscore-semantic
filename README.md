@@ -6,7 +6,7 @@
 # simiscore-semantic
 An ML API to compute semantic similarity scores between sentence examples. 
 The API is programmed with the [`fastapi` Python package](https://fastapi.tiangolo.com/), 
-and the semantic similarities are comuted based on [SBert (`sentence-transformers` package)](https://github.com/UKPLab/sentence-transformers). 
+and the semantic similarities are computed based on [SBert (`sentence-transformers` package)](https://github.com/UKPLab/sentence-transformers). 
 The deployment is configured for Docker Compose.
 
 
