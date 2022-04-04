@@ -121,7 +121,7 @@ rm -r .venv
 ## Appendix
 
 ### Support
-Please [open an issue](https://github.com/satzbeleg/simiscore-semantic/issues) for support.
+Please [open an issue](https://github.com/satzbeleg/simiscore-semantic/issues) for support. 
 
 
 ### Contributing
