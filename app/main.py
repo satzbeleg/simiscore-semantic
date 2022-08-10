@@ -27,7 +27,20 @@ app = FastAPI(
 @app.get(f"{srvurl}/")
 def get_info() -> dict:
     """Returns basic information about the application"""
-    return {"version": app.version, "model": similarity_scorer.model_name}
+    return {
+        "name": "simiscore-semantic",
+        "version": app.version,
+        "sbert": {
+            "model": similarity_scorer.model_name,
+        },
+        "input-data": {
+            "type": "string"
+        },
+        "output-data": {
+            "type": "matrix",
+            "metric": "cosine"
+        }
+    }
 
 
 @app.post(f"{srvurl}/similarities/", response_model=Dict[str, list])
