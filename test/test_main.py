@@ -31,8 +31,8 @@ def test_read_info():
     client = TestClient(app)
     response = client.get(f"{srvurl}/")
     assert response.status_code == 200
-    assert response.json() == {
-        "version": "0.1.0",
+    assert response.json().get("version") == "0.1.0"
+    assert response.json().get("sbert") == {
         "model": "paraphrase-multilingual-MiniLM-L12-v2",
     }
 

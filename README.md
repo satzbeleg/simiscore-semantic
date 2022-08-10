@@ -15,11 +15,11 @@ The deployment is configured for Docker Compose.
 Call Docker Compose
 
 ```sh
-export API_PORT=12345
+export API_PORT=8083
 docker-compose -f docker-compose.yml up --build
 
 # or as oneliner:
-API_PORT=12345 docker-compose -f docker-compose.yml up --build
+API_PORT=8083 docker-compose -f docker-compose.yml up --build
 ```
 
 (Start docker daemon before, e.g. `open /Applications/Docker.app` on MacOS).
@@ -27,8 +27,7 @@ API_PORT=12345 docker-compose -f docker-compose.yml up --build
 Check
 
 ```sh
-curl http://localhost:12345
-curl "http://127.0.0.1:12345/items/5?q=somequery"
+curl http://localhost:8083
 ```
 
 Notes: Only `main.py` is used in `Dockerfile`.
@@ -62,11 +61,10 @@ export SENTENCE_TRANSFORMERS_HOME="$(pwd)/sbert-models"
 
 ```sh
 source .venv/bin/activate
-
-gunicorn app.main:app --reload \
-    --bind=localhost:12345 \
+# uvicorn app.main:app --reload
+gunicorn app.main:app --reload --bind=0.0.0.0:8083 \
     --worker-class=uvicorn.workers.UvicornH11Worker \
-    --workers=2
+    --workers=1 --timeout=600
 ```
 
 
@@ -76,7 +74,7 @@ a) Send a list of strings.
 
 ```sh
 curl -X 'POST' \
-  'http://localhost:12345/similarities/' \
+  'http://localhost:8083/similarities/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '[
@@ -91,7 +89,7 @@ b) Send an JSON object with UUID4 as keys and text as values.
 
 ```sh
 curl -X 'POST' \
-  'http://localhost:12345/similarities/' \
+  'http://localhost:8083/similarities/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -105,8 +103,8 @@ curl -X 'POST' \
 ### Other commands and help
 * Check syntax: `flake8 --ignore=F401 --exclude=$(grep -v '^#' .gitignore | xargs | sed -e 's/ /,/g')`
 * Run Unit Tests: `PYTHONPATH=. pytest`
-- Show the docs: [http://localhost:12345/docs](http://localhost:12345/docs)
-- Show Redoc: [http://localhost:12345/redoc](http://localhost:12345/redoc)
+- Show the docs: [http://localhost:8083/docs](http://localhost:8083/docs)
+- Show Redoc: [http://localhost:8083/redoc](http://localhost:8083/redoc)
 
 
 ### Clean up 
