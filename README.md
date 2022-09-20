@@ -118,6 +118,12 @@ rm -r .venv
 
 ## Appendix
 
+### Citation
+
+### References
+- Sebastián Ramírez, 2018, FastAPI, [https://github.com/tiangolo/fastapi](https://github.com/tiangolo/fastapi)
+- Nils Reimers and Iryna Gurevych. 2019. Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. In Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP), pages 3982–3992, Hong Kong, China. Association for Computational Linguistics. [http://dx.doi.org/10.18653/v1/D19-1410](http://dx.doi.org/10.18653/v1/D19-1410)
+
 ### Support
 Please [open an issue](https://github.com/satzbeleg/simiscore-semantic/issues) for support. 
 
