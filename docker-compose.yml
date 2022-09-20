@@ -1,7 +1,7 @@
 version: '3'
 services:
   simiscore-semantic:
-    image: evidence-simiscore-semantic
+    image: simiscore-semantic
     build:   # build using Dockfile in this directory
       context: .
       dockerfile: Dockerfile

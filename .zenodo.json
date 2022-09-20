@@ -10,7 +10,7 @@
         }
     ],
     "title": "simiscore-semantic",
-    "description": "An ML API to compute semantic similarity scores between sentence examples. The API is programmed with the `fastapi` Python package, and the semantic similarities are comuted based on SBert (`sentence-transformers` package). The deployment is configured for Docker Compose.",
+    "description": "An ML API to compute semantic similarity scores between sentence examples.",
     "license": "Apache-2.0",
     "upload_type": "software",
     "keywords": [
